@@ -11,6 +11,7 @@ import java.net.URL;
 public class NetworkUtils {
     final static String MEALAPI_BY_NAME_URL = "https://www.themealdb.com/api/json/v1/1/search.php";
     final static String MEALAPI_BY_ID_URL = "https://www.themealdb.com/api/json/v1/1/lookup.php";
+    final static String MEALAPI_LATEST_MEALS_URL = "https://www.themealdb.com/api/json/v1/1/latest.php";
 
     final static String PARAM_NAME = "s";
     final static String PARAM_ID = "i";
