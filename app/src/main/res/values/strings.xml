@@ -2,4 +2,7 @@
     <string name="app_name">MealApp</string>
     <string name="suggested_tab">Suggested</string>
     <string name="favorites_tab">Favorites</string>
+    <string name="account">Account</string>
+    <string name="about">About</string>
+    <string name="clear">Clear</string>
 </resources>
