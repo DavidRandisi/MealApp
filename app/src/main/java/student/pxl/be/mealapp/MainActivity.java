@@ -14,7 +14,6 @@ import student.pxl.be.mealapp.fragments.LocalFragment;
 
 public class MainActivity extends AppCompatActivity {
     private TabLayout mtabLayout;
-    private AppBarLayout mappLayout;
     private ViewPager mviewPager;
 
     @Override
@@ -23,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mtabLayout = findViewById(R.id.tabs);
-        mappLayout = findViewById(R.id.appbar_id);
         mviewPager = findViewById(R.id.vp_id);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
