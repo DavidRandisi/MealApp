@@ -1,6 +1,7 @@
 package student.pxl.be.mealapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,7 +31,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recyclerview_list_item, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
@@ -39,13 +40,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     //Use Glide library to fetch a bitmap from an image url and place it into the imageview of the viewholder
     //Get the meal title and place it in the textview part of the item layout
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int position) {
         Log.d(TAG, "onBindViewHolder: called");
         Glide.with(context)
                 .asBitmap()
-                .load(meals.get(i).thumbnail)
+                .load(meals.get(position).thumbnail)
                 .into(viewHolder.imageView);
-        viewHolder.textView.setText(meals.get(i).title);
+        viewHolder.textView.setText(meals.get(position).title);
+
+        //Clicking on a recyclerview item starts a new MealDetailActivity with the clicked meal as argument
+        viewHolder.relativeLayout.setOnClickListener( (view) -> {
+            Log.d(TAG, "onBindViewHolder: button clicked");
+            Intent intent = new Intent(context, MealDetailActivity.class);
+            intent.putExtra("clickedMeal", meals.get(position));
+            context.startActivity(intent);
+        });
     }
 
     @Override
