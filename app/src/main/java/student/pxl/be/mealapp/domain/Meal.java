@@ -20,6 +20,15 @@ public class Meal implements Parcelable {
     @Expose
     public String thumbnail;
 
+    public Meal(){}
+
+    public Meal(Parcel source) {
+        title = source.readString();
+        href = source.readString();
+        ingredients = source.readString();
+        thumbnail = source.readString();
+    }
+
     public String getTitle() {
         return title;
     }
@@ -64,4 +73,16 @@ public class Meal implements Parcelable {
         dest.writeString(ingredients);
         dest.writeString(thumbnail);
     }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        @Override
+        public Meal createFromParcel(Parcel source) {
+            return new Meal(source);
+        }
+
+        @Override
+        public Meal[] newArray(int size) {
+            return new Meal[size];
+        }
+    };
 }
