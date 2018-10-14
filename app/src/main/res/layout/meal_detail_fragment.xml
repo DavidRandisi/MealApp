@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/details_layout_id">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/ic_launcher"
+        android:id="@+id/details_image_id"
+        android:contentDescription="@string/thumbnail_description"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="@string/ingredients_title" />
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/details_ingredients_id"
+        android:layout_gravity="center"
+        android:layout_margin= "10dp"
+        android:text="Dummy Ingredient 1, Dummy Ingredient 2, Dummy Ingredient 1, TO-BE REPLACED WITH LISTVIEW"/>
+
+    <LinearLayout
+        android:id="@+id/LinearLayoutButtons"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <Button
+            android:id="@+id/buttonFavorite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/add_to_favorites">
+        </Button>
+        <Button
+            android:id="@+id/buttonVisit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/visit_webpage">
+        </Button>
+    </LinearLayout>
+
+</LinearLayout>
