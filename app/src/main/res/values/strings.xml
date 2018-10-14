@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">MealApp</string>
-    <string name="explore_tab">Explore</string>
-    <string name="favorites_tab">Favorites</string>
+    <string name="add_to_favorites">ADD TO FAVORITES</string>
+    <string name="visit_webpage">VISIT</string>
+    <string name="ingredients_title">Ingredients</string>
+    <string name="thumbnail_description">Recipe Thumbnail</string>
     <string name="account">Account</string>
     <string name="about">About</string>
     <string name="clear">Clear</string>
