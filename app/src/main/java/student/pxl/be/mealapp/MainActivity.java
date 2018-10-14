@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
             Meal meal = new Meal();
             meal.thumbnail = "http://img.recipepuppy.com/11.jpg";
             meal.title = "TO BE REPLACED WITH API MEALS";
+            meal.ingredients = "Dummy Chicken, Dummy Rice";
+            meal.href = "https://www.allrecipes.com/recipe/14746/mushroom-pork-chops/";
             randomMeals.add(meal);
         }
         //Create argument bundle that contains the meal list to display in the particular recyclerview
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
             Meal meal = new Meal();
             meal.thumbnail = "http://img.recipepuppy.com/12.jpg";
             meal.title = "TO BE REPLACED WITH SQLITE FAVORITE MEALS";
+            meal.ingredients = "Dummy Chicken, Dummy Rice";
+            meal.href = "https://www.allrecipes.com/recipe/14746/mushroom-pork-chops/";
             favoriteMeals.add(meal);
         }
 
@@ -86,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
             Meal meal = new Meal();
             meal.thumbnail = "http://img.recipepuppy.com/16.jpg";
             meal.title = "TO BE REPLACED WITH SQLITE LOCAL MEALS";
+            meal.ingredients = "Dummy Chicken, Dummy Rice";
+            meal.href = "https://www.allrecipes.com/recipe/14746/mushroom-pork-chops/";
             localMeals.add(meal);
         }
 
