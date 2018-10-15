@@ -1,5 +1,7 @@
 package student.pxl.be.mealapp.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ public class MealDetailFragment extends Fragment {
     private ImageView thumbnailImageView;
     private ListView ingredientsListView;
     private TextView titleTextView;
+    private Button visitButton;
     private Meal meal;
 
     @Override
@@ -36,6 +40,7 @@ public class MealDetailFragment extends Fragment {
         thumbnailImageView = view.findViewById(R.id.details_image_id);
         ingredientsListView = view.findViewById(R.id.details_ingredients_list_id);
         titleTextView = view.findViewById(R.id.details_title_id);
+        visitButton = view.findViewById(R.id.details_buttonVisit_id);
 
         //Retrieve the clicked meal argument if it exists
         Bundle bundle = getArguments();
@@ -58,6 +63,17 @@ public class MealDetailFragment extends Fragment {
                 .into(thumbnailImageView);
         titleTextView.setText(meal.title);
 
+        //Create click listener on the visit button that starts a new implicit intent if there is an app installed to handle it
+        visitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri webPageUri = Uri.parse(meal.href);
+                Intent webPageIntent = new Intent(Intent.ACTION_VIEW, webPageUri);
+                if(webPageIntent.resolveActivity(getContext().getPackageManager()) != null){
+                    getContext().startActivity(webPageIntent);
+                }
+            }
+        });
         return view;
     }
 }

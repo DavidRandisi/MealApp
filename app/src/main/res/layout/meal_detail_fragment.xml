@@ -48,7 +48,7 @@
             android:text="@string/add_to_favorites">
         </Button>
         <Button
-            android:id="@+id/buttonVisit"
+            android:id="@+id/details_buttonVisit_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
