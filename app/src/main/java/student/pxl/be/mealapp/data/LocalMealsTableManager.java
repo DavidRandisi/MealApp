@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import student.pxl.be.mealapp.domain.Meal;
 
 public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
@@ -58,4 +61,31 @@ public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
         db.close();
         return meal;
     }
+
+    public List<Meal> getAllMeals() {
+        List<Meal> meals = new LinkedList<Meal>();
+
+        String query = "SELECT * FROM " + TABLE_LOCALMEALS;
+
+        db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        Meal meal = null;
+        if (cursor.moveToFirst()) {
+            do {
+                meal = new Meal();
+                meal.setId(cursor.getInt(0));
+                meal.setTitle(cursor.getString(1));
+                meal.setIngredients(cursor.getString(2));
+                meal.setThumbnail(cursor.getString(3));
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("getAllMeals()", meals.toString());
+        return meals;
+    }
+
+    //updatebook
+    //deletebook
+    //deleteall
 }
