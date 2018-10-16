@@ -14,6 +14,8 @@ import student.pxl.be.mealapp.domain.Meal;
 
 public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
 
+    //TODO: Refactor this class for better performance and readability, see contentvalues and set meals
+
     private static final String DATABASE_NAME = "Meals";
     private static final String TABLE_LOCALMEALS = "LOCALMEALS";
     private static final String KEY_DESCRIPTION = "description"; //TODO: Add description for local meals
@@ -81,11 +83,34 @@ public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
             } while (cursor.moveToNext());
         }
 
-        Log.d("getAllMeals()", meals.toString());
+        Log.d("getAllMeals", meals.toString());
         return meals;
     }
 
-    //updatebook
-    //deletebook
-    //deleteall
+    public int updateMeal(Meal meal) {
+        db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_TITLE, meal.getTitle());
+        values.put(KEY_INGREDIENTS, meal.getIngredients());
+        values.put(KEY_THUMBNAIL, meal.getThumbnail());
+
+        int i = db.update(TABLE_LOCALMEALS, values, KEY_ID + " = ?",
+                new String[] { String.valueOf(meal.getId())});
+
+        db.close();
+        Log.d("updateMeal", meal.toString());
+        return i;
+    }
+
+    public void deleteMeal(Meal meal) {
+        db = this.getWritableDatabase();
+
+        db.delete(TABLE_LOCALMEALS, KEY_ID + " = ?",
+                new String[] { String.valueOf(meal.getId())});
+
+        db.close();
+        Log.d("deleteMeal", meal.toString());
+    }
+    //TODO: Delete all local meals at once
 }
