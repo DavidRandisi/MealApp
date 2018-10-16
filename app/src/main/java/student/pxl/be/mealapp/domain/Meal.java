@@ -7,6 +7,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Meal implements Parcelable {
+    @SerializedName("recipe_id")
+    @Expose
+    public int id;
     @SerializedName("title")
     @Expose
     public String title;
@@ -23,10 +26,19 @@ public class Meal implements Parcelable {
     public Meal(){}
 
     public Meal(Parcel source) {
+        id = source.readInt();
         title = source.readString();
         href = source.readString();
         ingredients = source.readString();
         thumbnail = source.readString();
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -68,6 +80,7 @@ public class Meal implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(href);
         dest.writeString(ingredients);
