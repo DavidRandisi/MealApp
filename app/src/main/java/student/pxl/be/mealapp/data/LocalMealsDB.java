@@ -20,6 +20,7 @@ public class LocalMealsDB extends SQLiteOpenHelper{
                 "ingredients TEXT," +
                 "thumbnail TEXT)"; //TODO: thumbnail from camera
         db.execSQL(CREATE_LOCALMEALS_TABLE);
+        //TODO: FAVORITEMEALS DB
     }
 
     @Override
@@ -31,5 +32,5 @@ public class LocalMealsDB extends SQLiteOpenHelper{
         this.onCreate(db);
     }
 
-    
+
 }
