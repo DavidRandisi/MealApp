@@ -18,5 +18,15 @@ public abstract class AsyncDatabaseHandler {
         }.execute();
     }
 
+    public final void asyncUpdate(Meal meal) {
+        new AsyncTask<Void, Void, Integer>(){
+            @Override
+            protected Integer doInBackground(Void... params){
+                tabelManager.updateMeal(meal);
+                return meal.getId();
+            }
+        }.execute();
+    }
+
     //TODO: Add Async tasks
 }
