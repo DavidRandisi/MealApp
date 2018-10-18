@@ -1,6 +1,5 @@
 package student.pxl.be.mealapp.data;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import student.pxl.be.mealapp.domain.Meal;
 
