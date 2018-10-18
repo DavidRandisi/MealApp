@@ -28,5 +28,18 @@ public abstract class AsyncDatabaseHandler {
         }.execute();
     }
 
-    //TODO: Add Async tasks
+    public final void asyncDelete(Meal meal){
+        new AsyncTask<Void, Void, Integer>(){
+            @Override
+            protected Integer doInBackground(Void... params){
+                int mealId = meal.getId();
+                tabelManager.deleteMeal(meal);
+                return mealId;
+            }
+        }.execute();
+    }
+
+    public final void asyndDeleteAll(){
+        //TODO: Delete all async
+    }
 }
