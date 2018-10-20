@@ -2,7 +2,11 @@ package student.pxl.be.mealapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,15 +21,18 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import student.pxl.be.mealapp.domain.Meal;
+import student.pxl.be.mealapp.fragments.MealDetailFragment;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
-    private ArrayList<Meal> meals = new ArrayList<>();
+    private ArrayList<Meal> meals;
     private Context context;
+    private OnItemClickListener itemClickListener;
 
-    public RecyclerViewAdapter(Context context, ArrayList<Meal> meals) {
+    public RecyclerViewAdapter(Context context, ArrayList<Meal> meals, OnItemClickListener listener) {
         this.meals = meals;
         this.context = context;
+        this.itemClickListener = listener;
     }
 
     @NonNull
@@ -37,23 +44,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    //Use Glide library to fetch a bitmap from an image url and place it into the imageview of the viewholder
-    //Get the meal title and place it in the textview part of the item layout
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int position) {
         Log.d(TAG, "onBindViewHolder: called");
-        Glide.with(context)
-                .asBitmap()
-                .load(meals.get(position).thumbnail)
-                .into(viewHolder.imageView);
-        viewHolder.textView.setText(meals.get(position).title);
-
-        //Clicking on a recyclerview item starts a new MealDetailActivity with the clicked meal as argument
-        viewHolder.relativeLayout.setOnClickListener( (view) -> {
-            Log.d(TAG, "onBindViewHolder: button clicked");
-            Intent intent = new Intent(context, MealDetailActivity.class);
-            intent.putExtra("clickedMeal", meals.get(position));
-            context.startActivity(intent);
-        });
+        viewHolder.bind(meals.get(position), itemClickListener);
     }
 
     @Override
@@ -71,6 +64,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imageView = itemView.findViewById(R.id.item_image_id);
             textView = itemView.findViewById(R.id.item_text_id);
             relativeLayout = itemView.findViewById(R.id.parent_layout_id);
+        }
+        //Bind current viewholder with the data of the given meal and add a click listener
+        public void bind(Meal meal, OnItemClickListener listener) {
+            Glide.with(context)
+                    .asBitmap()
+                    .load(meal.thumbnail)
+                    .into(imageView);
+            textView.setText(meal.title);
+
+            itemView.setOnClickListener( (view) -> {
+                listener.onItemClick(meal);
+            });
         }
     }
 }
