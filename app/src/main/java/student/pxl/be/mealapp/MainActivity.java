@@ -1,6 +1,9 @@
 package student.pxl.be.mealapp;
 
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,29 +30,52 @@ public class MainActivity extends AppCompatActivity {
 
         mtabLayout = findViewById(R.id.tabs);
         mviewPager = findViewById(R.id.vp_id);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         randomMeals = new ArrayList<>();
         favoriteMeals = new ArrayList<>();
         localMeals = new ArrayList<>();
 
-        //if there is no saved instance, create fragments with passed data as args and add them to the viewpageradapter
-        if(savedInstanceState == null){
-            MealsFragment exploreListFragment = fetchExploreMealsDataAndCreateFragment();
-            MealsFragment favoriteFragment = fetchFavoriteMealsDataAndCreateFragment();
-            MealsFragment localFragment = fetchLocalMealsDataAndCreateFragment();
-
-            //add fragments to the adapter
-            viewPagerAdapter.addFragment(exploreListFragment, "EXPLORE");
-            viewPagerAdapter.addFragment(favoriteFragment, "FAVORITES");
-            viewPagerAdapter.addFragment(localFragment, "LOCAL");
-        }
-
-        //set adapter to the viewpager and link it with the different tabs
+        FragmentPagerAdapter viewPagerAdapter = new ViewPagerAdapter();
         mviewPager.setAdapter(viewPagerAdapter);
         mtabLayout.setupWithViewPager(mviewPager);
+
     }
 
-    //TO-DO: replace dummy data with data from a AsyncTaskLoader API call
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        public ViewPagerAdapter() {
+            super(getSupportFragmentManager());
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0: return fetchExploreMealsDataAndCreateFragment();
+                case 1: return fetchFavoriteMealsDataAndCreateFragment();
+                case 2: return fetchLocalMealsDataAndCreateFragment();
+
+                default: throw new IllegalArgumentException("unexpected position: " + position);
+            }
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0: return "EXPLORE";
+                case 1: return "FAVORITES";
+                case 2: return "LOCAL";
+
+                default: throw new IllegalArgumentException("unexpected position: " + position);
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    }
+
+    //TODO: replace dummy data with data from a AsyncTaskLoader API call
     private MealsFragment fetchExploreMealsDataAndCreateFragment() {
         for(int i = 0; i<20; i++){
             Meal meal = new Meal();
