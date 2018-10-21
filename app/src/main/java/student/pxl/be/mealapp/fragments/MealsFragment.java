@@ -65,10 +65,7 @@ public class MealsFragment extends Fragment
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(context, meals, (meal) -> {
                 if(insideTwoPane){
                         //Replace the details frame with the details of the newly clicked meal via the fragmentmanager
-                        Bundle args = new Bundle();
-                        args.putParcelable("clickedMeal", meal);
-                        MealDetailFragment mealDetailFragment = new MealDetailFragment();
-                        mealDetailFragment.setArguments(args);
+                        MealDetailFragment mealDetailFragment = MealDetailFragment.newInstance(meal);
 
                         AppCompatActivity appCompatActivityContext = ( (AppCompatActivity) context);
                         FragmentManager fragmentManager = appCompatActivityContext.getSupportFragmentManager();
@@ -79,7 +76,6 @@ public class MealsFragment extends Fragment
                         //Clicking on a recyclerview item starts a new MealDetailActivity with the clicked meal as argument
                         Intent intent = new Intent(context, MealDetailActivity.class);
                         intent.putExtra("clickedMeal", meal);
-                        //TODO: add in-app backwards navigation
                         context.startActivity(intent);
                 }
         });
@@ -87,5 +83,14 @@ public class MealsFragment extends Fragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         return view;
+    }
+    //Creates a new instance of this class with the given meals and mode as arguments
+    public static MealsFragment newInstance(ArrayList<Meal> meals, boolean isTwoPane){
+        MealsFragment fragment = new MealsFragment();
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(MEALS__KEY, meals);
+        args.putBoolean("isTwoPane", isTwoPane);
+        fragment.setArguments(args);
+        return fragment;
     }
 }

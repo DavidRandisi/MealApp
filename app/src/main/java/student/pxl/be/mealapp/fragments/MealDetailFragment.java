@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
 import student.pxl.be.mealapp.R;
 import student.pxl.be.mealapp.domain.Meal;
 
@@ -75,5 +77,14 @@ public class MealDetailFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    //Creates a new instance of this class with the given meal
+    public static MealDetailFragment newInstance(Meal meal){
+        MealDetailFragment fragment = new MealDetailFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("clickedMeal", meal);
+        fragment.setArguments(args);
+        return fragment;
     }
 }

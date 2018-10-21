@@ -121,13 +121,8 @@ public class MainActivity extends AppCompatActivity {
             randomMeals.add(meal);
         }
 
-        //Create argument bundle that contains the meal list to display in the particular recyclerview
-        Bundle args = new Bundle();
-        args.putParcelableArrayList(MEALS__KEY, randomMeals);
-        args.putBoolean("isTwoPane", isTwoPane);
-        MealsFragment exploreListFragment = new MealsFragment();
-        exploreListFragment.setArguments(args);
-        return exploreListFragment;
+        //Create new MealsFragment instance with random meals and information about the current mode
+        return MealsFragment.newInstance(randomMeals, isTwoPane);
     }
 
     private MealsFragment getFavoriteMealsFragment(){
@@ -141,13 +136,8 @@ public class MainActivity extends AppCompatActivity {
                 favoriteMeals.add(meal);
             }
         }
-        //Create argument bundle that contains the meal list to display in the particular recyclerview
-        Bundle args = new Bundle();
-        args.putParcelableArrayList(MEALS__KEY, favoriteMeals);
-        args.putBoolean("isTwoPane", isTwoPane);
-        MealsFragment favoriteListFragment = new MealsFragment();
-        favoriteListFragment.setArguments(args);
-        return favoriteListFragment;
+        ////Create new MealsFragment instance with favorite meals and information about the current mode
+        return MealsFragment.newInstance(favoriteMeals, isTwoPane);
     }
 
     private MealsFragment getLocalMealsFragment(){
@@ -161,13 +151,8 @@ public class MainActivity extends AppCompatActivity {
                 localMeals.add(meal);
             }
         }
-        //Create argument bundle that contains the meal list to display in the particular recyclerview
-        Bundle args = new Bundle();
-        args.putParcelableArrayList(MEALS__KEY, localMeals);
-        args.putBoolean("isTwoPane", isTwoPane);
-        MealsFragment localListFragment = new MealsFragment();
-        localListFragment.setArguments(args);
-        return localListFragment;
+        //Create new MealsFragment instance with local meals and information about the current mode
+        return MealsFragment.newInstance(localMeals, isTwoPane);
     }
 
     @Override
