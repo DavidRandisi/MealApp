@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <!--TODO: add custom icons to menu items -->
+        <item
+            android:id="@+id/nav_explore_id"
+            android:title="@string/nav_explore" />
+        <item
+            android:id="@+id/nav_favorite_id"
+            android:title="@string/nav_favorite" />
+        <item
+            android:id="@+id/nav_local_id"
+            android:title="@string/nav_local" />
+    </group>
+</menu>

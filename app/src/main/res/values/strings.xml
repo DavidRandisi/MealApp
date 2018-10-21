@@ -8,4 +8,7 @@
     <string name="account">Account</string>
     <string name="about">About</string>
     <string name="clear">Clear</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_favorite">Favorites</string>
+    <string name="nav_local">Local</string>
 </resources>
