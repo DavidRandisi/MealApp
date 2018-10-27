@@ -17,18 +17,14 @@ public class NetworkUtils {
 
     final static String PARAM_NAME = "q";
     final static String PARAM_INGREDIENTS = "i";
+    final static String PARAM_PAGE = "p";
 
-    public static URL buildSearchUri(String searchQuery){
+    public static String buildUriString(String name, String page){
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter(PARAM_NAME, searchQuery)
+                .appendQueryParameter(PARAM_NAME, name)
+                .appendQueryParameter(PARAM_PAGE, page)
                 .build();
-        URL url = null;
-        try{
-            url = new URL(builtUri.toString());
-        } catch(MalformedURLException exception){
-            exception.printStackTrace();
-        }
-        return url;
+        return builtUri.toString();
     }
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

@@ -38,4 +38,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     //circleimageview widget to display pictures in circle form
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    //Volley to communicate with the API via HTTP
+    implementation 'com.android.volley:volley:1.1.1'
 }
