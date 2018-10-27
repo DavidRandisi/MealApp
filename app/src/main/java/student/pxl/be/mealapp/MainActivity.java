@@ -2,11 +2,13 @@ package student.pxl.be.mealapp;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.android.volley.RequestQueue;
@@ -35,7 +37,26 @@ public class MainActivity extends AppCompatActivity {
 
         determineTwoPane();
         setupMenuNavigation();
-        fetchAndDisplayExploreMeals();
+
+        if(savedInstanceState == null){
+            fetchAndDisplayExploreMeals();
+        } else {
+            MealsFragment currentFragment = (MealsFragment) getSupportFragmentManager().getFragment(savedInstanceState, "CurrentFragment");
+            if(currentFragment != null && currentFragment.getArguments() != null){
+                Bundle args = currentFragment.getArguments();
+                args.putBoolean("isTwoPane", isTwoPane);
+                currentFragment.setArguments(args);
+            }
+            replaceMealsFragment(currentFragment);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.list_frame_id);
+        if(currentFragment != null)
+        getSupportFragmentManager().putFragment(outState, "CurrentFragment", currentFragment);
     }
 
     //Decides if the screen is in twoPane mode by checking if the meal detail frame is available
