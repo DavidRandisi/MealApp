@@ -1,12 +1,7 @@
 package student.pxl.be.mealapp;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +16,6 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import student.pxl.be.mealapp.domain.Meal;
-import student.pxl.be.mealapp.fragments.MealDetailFragment;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";

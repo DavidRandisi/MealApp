@@ -17,17 +17,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
-
 import student.pxl.be.mealapp.R;
 import student.pxl.be.mealapp.domain.Meal;
 
 public class MealDetailFragment extends Fragment {
-    View view;
-    private ImageView thumbnailImageView;
-    private ListView ingredientsListView;
-    private TextView titleTextView;
-    private Button visitButton;
+    private View view;
     private Meal meal;
 
     @Override
@@ -39,10 +33,10 @@ public class MealDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.meal_detail_fragment, container, false);
-        thumbnailImageView = view.findViewById(R.id.details_image_id);
-        ingredientsListView = view.findViewById(R.id.details_ingredients_list_id);
-        titleTextView = view.findViewById(R.id.details_title_id);
-        visitButton = view.findViewById(R.id.details_buttonVisit_id);
+        ImageView thumbnailImageView = view.findViewById(R.id.details_image_id);
+        ListView ingredientsListView = view.findViewById(R.id.details_ingredients_list_id);
+        TextView titleTextView = view.findViewById(R.id.details_title_id);
+        Button visitButton = view.findViewById(R.id.details_buttonVisit_id);
 
         //Retrieve the clicked meal argument if it exists
         Bundle bundle = getArguments();

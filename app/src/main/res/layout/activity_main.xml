@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/land_drawer_layout_id"
+        android:id="@+id/drawer_layout_id"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/land_list_frame_id"
+            android:id="@+id/list_frame_id"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </FrameLayout>
 
         <android.support.design.widget.NavigationView
-            android:id="@+id/land_navigation_id"
+            android:id="@+id/navigation_id"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"

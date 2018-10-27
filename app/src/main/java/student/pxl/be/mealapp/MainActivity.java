@@ -4,14 +4,9 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.android.volley.RequestQueue;
@@ -26,14 +21,12 @@ import student.pxl.be.mealapp.fragments.MealsFragment;
 import student.pxl.be.mealapp.utils.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String MEALS__KEY = "mealkey";
     private MealsFragment exploreMealsFragment;
     private MealsFragment favoriteMealsFragment;
     private MealsFragment localMealsFragment;
     private boolean isTwoPane;
-    private DrawerLayout mDrawerLayout;
+    private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupMenuNavigation() {
-        mDrawerLayout = findViewById(R.id.land_drawer_layout_id);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
+        drawerLayout = findViewById(R.id.drawer_layout_id);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.Open, R.string.Close);
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        navigationView = findViewById(R.id.land_navigation_id);
+        NavigationView navigationView = findViewById(R.id.navigation_id);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -68,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             // set item as selected to persist highlight
             menuItem.setChecked(true);
             // close drawer when item is tapped
-            mDrawerLayout.closeDrawers();
+            drawerLayout.closeDrawers();
 
             // Swap MealsFragment based on clicked menu item
             int id = menuItem.getItemId();
@@ -141,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
     private void replaceMealsFragment(MealsFragment mealsFragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.land_list_frame_id, mealsFragment);
+        fragmentTransaction.replace(R.id.list_frame_id, mealsFragment);
         fragmentTransaction.commit();
     }
     @Override

@@ -11,27 +11,19 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 import student.pxl.be.mealapp.MealDetailActivity;
-import student.pxl.be.mealapp.OnItemClickListener;
 import student.pxl.be.mealapp.R;
 import student.pxl.be.mealapp.RecyclerViewAdapter;
 import student.pxl.be.mealapp.domain.Meal;
 
 public class MealsFragment extends Fragment
 {
-    View view;
-    private RecyclerView recyclerView;
-    private ArrayList<Meal> meals;
     private static final String MEALS__KEY = "mealkey";
     private boolean insideTwoPane;
     private Context context;
@@ -45,12 +37,12 @@ public class MealsFragment extends Fragment
     @Override
     //Returns the view that is linked to this fragment class and initialize the recyclerview
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.meals_fragment, container, false);
-        recyclerView = view.findViewById(R.id.meals_recycler_view_id);
+        View view = inflater.inflate(R.layout.meals_fragment, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.meals_recycler_view_id);
         context = getContext();
 
         //If there are arguments passed and it contains the right key, retrieve and store them
-        meals = new ArrayList<>();
+        ArrayList<Meal> meals = new ArrayList<>();
         Bundle bundle = getArguments();
         if(bundle != null){
             if(getArguments().containsKey(MEALS__KEY)){

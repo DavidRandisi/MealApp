@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/land_drawer_layout_id">
+    android:id="@+id/drawer_layout_id">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:weightSum="10">
         <!-- Placeholder for the MealsFragment -->
         <FrameLayout
-            android:id="@+id/land_list_frame_id"
+            android:id="@+id/list_frame_id"
             android:layout_width="0dp"
             android:layout_weight="3"
             android:layout_height="match_parent"/>
@@ -35,7 +35,7 @@
 
     <!-- Container for contents of drawer -->
     <android.support.design.widget.NavigationView
-        android:id="@+id/land_navigation_id"
+        android:id="@+id/navigation_id"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
