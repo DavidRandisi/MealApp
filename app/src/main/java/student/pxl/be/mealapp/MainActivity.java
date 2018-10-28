@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import student.pxl.be.mealapp.domain.Meal;
 import student.pxl.be.mealapp.domain.MealResult;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState == null){
             fetchAndDisplayExploreMeals();
         } else {
+            //Display the fragment that was shown before the activity got destroyed
             MealsFragment currentFragment = (MealsFragment) getSupportFragmentManager().getFragment(savedInstanceState, "CurrentFragment");
             if(currentFragment != null && currentFragment.getArguments() != null){
                 Bundle args = currentFragment.getArguments();
@@ -54,9 +56,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        //Save the currently displayed fragment
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.list_frame_id);
-        if(currentFragment != null)
-        getSupportFragmentManager().putFragment(outState, "CurrentFragment", currentFragment);
+        if(currentFragment != null){
+            getSupportFragmentManager().putFragment(outState, "CurrentFragment", currentFragment);
+        }
     }
 
     //Decides if the screen is in twoPane mode by checking if the meal detail frame is available
@@ -102,17 +107,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void fetchAndDisplayExploreMeals(){
-        String exploreURL = NetworkUtils.buildUriString("","1");
-        GsonRequest<MealResult> mealRequest = new GsonRequest<>(exploreURL, MealResult.class, null, createResponseListener(), null);
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(mealRequest);
+        if(this.exploreMealsFragment == null){
+            int randomPage = new Random().nextInt(100) + 1;
+            String exploreURL = NetworkUtils.buildUriString("",Integer.toString(randomPage));
+            Log.d("MainActivity", "fetchAndDisplayExploreMeals: about to call " + exploreURL);
+            GsonRequest<MealResult> mealRequest = new GsonRequest<>(exploreURL, MealResult.class, null, createResponseListener(), null);
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(mealRequest);
+        } else {
+            replaceMealsFragment(exploreMealsFragment);
+        }
     }
     private Response.Listener<MealResult> createResponseListener(){
         return (response) -> {
                 ArrayList<Meal> randomMeals = (ArrayList<Meal>) response.meals;
-                if(this.exploreMealsFragment == null){
-                    exploreMealsFragment = MealsFragment.newInstance(randomMeals, isTwoPane);
-                }
+                exploreMealsFragment = MealsFragment.newInstance(randomMeals, isTwoPane);
                 replaceMealsFragment(exploreMealsFragment);
         };
     }
