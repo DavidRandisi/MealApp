@@ -53,10 +53,12 @@ public class MealDetailFragment extends Fragment {
         ingredientsListView.setAdapter(adapter);
 
         //Fill in the thumbnail and title for the fragment layout
-        Glide.with(this)
-                .asBitmap()
-                .load(meal.thumbnail)
-                .into(thumbnailImageView);
+        if(meal.thumbnail.trim().length() != 0){
+            Glide.with(this)
+                    .asBitmap()
+                    .load(meal.thumbnail)
+                    .into(thumbnailImageView);
+        }
         titleTextView.setText(meal.title);
 
         //Create click listener on the visit button that starts a new implicit intent if there is an app installed to handle it

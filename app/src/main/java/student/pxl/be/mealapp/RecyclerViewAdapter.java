@@ -61,10 +61,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
         //Bind current viewholder with the data of the given meal and add a click listener
         public void bind(Meal meal, OnItemClickListener listener) {
-            Glide.with(context)
-                    .asBitmap()
-                    .load(meal.thumbnail)
-                    .into(imageView);
+            if(meal.thumbnail.trim().length() != 0){
+                Glide.with(context)
+                        .asBitmap()
+                        .load(meal.thumbnail)
+                        .into(imageView);
+            }
             textView.setText(meal.title);
 
             itemView.setOnClickListener( (view) -> {

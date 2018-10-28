@@ -5,6 +5,7 @@
     <string name="visit_webpage">VISIT</string>
     <string name="ingredients_title">Ingredients</string>
     <string name="thumbnail_description">Recipe Thumbnail</string>
+    <string name="no_title_found">No Title Found</string>
     <string name="Open">Open</string>
     <string name="Close">Close</string>
     <string name="nav_explore">Explore</string>
