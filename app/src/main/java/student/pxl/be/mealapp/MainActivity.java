@@ -1,5 +1,6 @@
 package student.pxl.be.mealapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -39,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FloatingActionButton fab = findViewById(R.id.fab_id);
-        fab.setOnClickListener(v -> Toast.makeText(v.getContext(),"FAB clicked", Toast.LENGTH_LONG).show());
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), LocalMealActivity.class);
+            v.getContext().startActivity(intent);
+        });
 
         determineTwoPane();
         setupMenuNavigation();
