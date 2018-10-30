@@ -23,7 +23,7 @@ public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
     private static final String KEY_TITLE = "title";
     private static final String KEY_INGREDIENTS = "ingredients";
     private static final String KEY_THUMBNAIL = "thumbnail";
-    private static final String[] COLUMNS = {KEY_ID, KEY_TITLE, KEY_INGREDIENTS, KEY_THUMBNAIL};
+    private static final String[] COLUMNS = {KEY_ID, KEY_TITLE, KEY_INGREDIENTS, KEY_THUMBNAIL, KEY_DESCRIPTION};
 
     private SQLiteDatabase db;
 
