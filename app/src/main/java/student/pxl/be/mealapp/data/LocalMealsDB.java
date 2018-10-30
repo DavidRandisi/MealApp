@@ -18,7 +18,8 @@ public class LocalMealsDB extends SQLiteOpenHelper{
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "title TEXT," +
                 "ingredients TEXT," +
-                "thumbnail TEXT)"; //TODO: thumbnail from camera
+                "thumbnail TEXT," +
+                "description TEXT)"; //TODO: thumbnail from camera
         db.execSQL(CREATE_LOCALMEALS_TABLE);
         //TODO: FAVORITEMEALS DB
     }

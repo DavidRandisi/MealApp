@@ -18,12 +18,13 @@ public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
 
     private static final String DATABASE_NAME = "Meals";
     private static final String TABLE_LOCALMEALS = "LOCALMEALS";
-    private static final String KEY_DESCRIPTION = "description"; //TODO: Add description for local meals
+    private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
     private static final String KEY_INGREDIENTS = "ingredients";
     private static final String KEY_THUMBNAIL = "thumbnail";
     private static final String[] COLUMNS = {KEY_ID, KEY_TITLE, KEY_INGREDIENTS, KEY_THUMBNAIL};
+
     private SQLiteDatabase db;
 
     public LocalMealsTableManager(Context context){
@@ -39,6 +40,7 @@ public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
         values.put(KEY_TITLE, meal.getTitle());
         values.put(KEY_INGREDIENTS, meal.getIngredients());
         values.put(KEY_THUMBNAIL, meal.getThumbnail());
+        values.put(KEY_DESCRIPTION, meal.getDescription());
 
         db.insert(TABLE_LOCALMEALS, null, values);
         db.close();
@@ -59,6 +61,7 @@ public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
         meal.setTitle(cursor.getString(1));
         meal.setIngredients(cursor.getString(2));
         meal.setThumbnail(cursor.getString(3));
+        meal.setDescripion(cursor.getString(4));
 
         db.close();
         return meal;
@@ -80,6 +83,7 @@ public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
                 meal.setTitle(cursor.getString(1));
                 meal.setIngredients(cursor.getString(2));
                 meal.setThumbnail(cursor.getString(3));
+                meal.setDescripion(cursor.getString(4));
             } while (cursor.moveToNext());
         }
 
@@ -94,6 +98,7 @@ public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
         values.put(KEY_TITLE, meal.getTitle());
         values.put(KEY_INGREDIENTS, meal.getIngredients());
         values.put(KEY_THUMBNAIL, meal.getThumbnail());
+        values.put(KEY_DESCRIPTION, meal.getDescription());
 
         int i = db.update(TABLE_LOCALMEALS, values, KEY_ID + " = ?",
                 new String[] { String.valueOf(meal.getId())});

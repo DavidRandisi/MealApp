@@ -22,6 +22,9 @@ public class Meal implements Parcelable {
     @SerializedName("thumbnail")
     @Expose
     public String thumbnail;
+    @SerializedName("description")
+    @Expose
+    public String description;
 
     public Meal(){}
 
@@ -31,6 +34,14 @@ public class Meal implements Parcelable {
         href = source.readString();
         ingredients = source.readString();
         thumbnail = source.readString();
+    }
+
+    public void setDescripion(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public int getId(){
