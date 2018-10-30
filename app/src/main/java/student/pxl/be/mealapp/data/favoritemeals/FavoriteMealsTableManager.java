@@ -91,5 +91,3 @@ public abstract class FavoriteMealsTableManager  extends SQLiteOpenHelper {
     }
     //TODO: Delete all favorite meals at once
 }
-
-}
