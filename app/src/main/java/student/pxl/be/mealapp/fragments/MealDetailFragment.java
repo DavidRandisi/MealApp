@@ -18,11 +18,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import student.pxl.be.mealapp.R;
+import student.pxl.be.mealapp.data.favoritemeals.AsyncFavoriteDatabaseHandler;
 import student.pxl.be.mealapp.domain.Meal;
 
 public class MealDetailFragment extends Fragment {
     private View view;
     private Meal meal;
+    private AsyncFavoriteDatabaseHandler asyncFavoriteDatabaseHandler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class MealDetailFragment extends Fragment {
         ListView ingredientsListView = view.findViewById(R.id.details_ingredients_list_id);
         TextView titleTextView = view.findViewById(R.id.details_title_id);
         Button visitButton = view.findViewById(R.id.details_buttonVisit_id);
+        Button buttonFavorite = view.findViewById(R.id.buttonFavorite);
 
         //Retrieve the clicked meal argument if it exists
         Bundle bundle = getArguments();
@@ -72,6 +75,15 @@ public class MealDetailFragment extends Fragment {
                 }
             }
         });
+
+        buttonFavorite.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                asyncFavoriteDatabaseHandler.asyncInsert(meal);
+                //TODO: UNFAVORITE MEALS
+            }
+        });
+
         return view;
     }
 
