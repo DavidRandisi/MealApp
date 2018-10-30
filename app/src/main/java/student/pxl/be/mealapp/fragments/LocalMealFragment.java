@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import student.pxl.be.mealapp.R;
+import student.pxl.be.mealapp.data.AsyncDatabaseHandler;
+import student.pxl.be.mealapp.domain.Meal;
 
 public class LocalMealFragment extends Fragment {
     private ImageButton imageButton;
@@ -20,6 +22,7 @@ public class LocalMealFragment extends Fragment {
     private EditText description;
     private EditText ingredients;
     private Button saveButton;
+    private AsyncDatabaseHandler asyncDatabaseHandler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +39,17 @@ public class LocalMealFragment extends Fragment {
         ingredients = view.findViewById(R.id.local_ingredients_id);
         saveButton = view.findViewById(R.id.local_savebutton_id);
         imageButton.setOnClickListener(v -> Toast.makeText(v.getContext(), "TODO: Open camera", Toast.LENGTH_LONG).show());
+        saveButton.setOnClickListener( new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Meal meal = new Meal();
+                                meal.setIngredients(ingredients.getText().toString()); //TODO: Check if correct
+                                meal.setTitle(title.getText().toString());
+                                //TODO: Description
+                                asyncDatabaseHandler.asyncInsert(meal);
+                            }
+                            //TODO: Go back to previous activity
+                });
         return view;
     }
 }
