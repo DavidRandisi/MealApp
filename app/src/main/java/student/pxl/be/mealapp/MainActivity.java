@@ -22,6 +22,9 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.Random;
 
+import student.pxl.be.mealapp.data.AsyncDatabaseHandler;
+import student.pxl.be.mealapp.data.LocalMealsDB;
+import student.pxl.be.mealapp.data.LocalMealsTableManager;
 import student.pxl.be.mealapp.domain.Meal;
 import student.pxl.be.mealapp.domain.MealResult;
 import student.pxl.be.mealapp.fragments.MealsFragment;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isTwoPane;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private LocalMealsTableManager localMealsTableManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,17 +158,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchAndDisplayLocalMeals() {
-        ArrayList<Meal> localMeals = new ArrayList<>();
-        if (localMeals.size() == 0) {
-            for (int i = 0; i < 20; i++) {
-                Meal meal = new Meal();
-                meal.thumbnail = "http://img.recipepuppy.com/16.jpg";
-                meal.title = "TO BE REPLACED WITH SQLITE LOCAL MEALS";
-                meal.ingredients = "Dummy Chicken, Dummy Rice";
-                meal.href = "https://www.allrecipes.com/recipe/14746/mushroom-pork-chops/";
-                localMeals.add(meal);
-            }
-        }
+        ArrayList<Meal> localMeals;
+        localMealsTableManager = new LocalMealsTableManager(getApplicationContext());
+        localMeals = localMealsTableManager.getAllMeals();
         if(this.localMealsFragment == null){
             localMealsFragment = MealsFragment.newInstance(localMeals, isTwoPane);
         }
