@@ -3,6 +3,7 @@ package student.pxl.be.mealapp.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,9 +46,14 @@ public class LocalMealFragment extends Fragment {
                                 Meal meal = new Meal();
                                 meal.setIngredients(ingredients.getText().toString()); //TODO: Check if correct
                                 meal.setTitle(title.getText().toString());
-                                //TODO: Description
-                                asyncDatabaseHandler.asyncInsert(meal);
+                                meal.setDescripion(description.getText().toString());
+                                meal.setThumbnail("none");
+
+                                //TODO: Remove hardcoded strings
+                                asyncDatabaseHandler = new AsyncDatabaseHandler();
+                                asyncDatabaseHandler.asyncInsert(meal, getContext());
                             }
+
                             //TODO: Go back to previous activity
                 });
         return view;
