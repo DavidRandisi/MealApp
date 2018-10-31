@@ -7,12 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import student.pxl.be.mealapp.domain.Meal;
 
-public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
+public class LocalMealsTableManager extends SQLiteOpenHelper{
 
     //TODO: Refactor this class for better performance and readability, see contentvalues and set meals
 
@@ -30,6 +31,27 @@ public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
     public LocalMealsTableManager(Context context){
         //TODO: Make sure that MealsDB is only created once
         super(context, DATABASE_NAME, null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        String CREATE_LOCALMEALS_TABLE = "CREATE TABLE LOCALMEALS(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "title TEXT," +
+                "ingredients TEXT," +
+                "thumbnail TEXT," +
+                "description TEXT)"; //TODO: thumbnail from camera
+        db.execSQL(CREATE_LOCALMEALS_TABLE);
+        //TODO: FAVORITEMEALS DB
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //Drop older table if exists
+        db.execSQL("DROP TABLE IF EXISTS LOCALMEALS");
+
+        //create fresh table
+        this.onCreate(db);
     }
 
     public void addMeal(Meal meal){
@@ -67,8 +89,8 @@ public abstract class LocalMealsTableManager extends SQLiteOpenHelper{
         return meal;
     }
 
-    public List<Meal> getAllMeals() {
-        List<Meal> meals = new LinkedList<Meal>();
+    public ArrayList<Meal> getAllMeals() {
+        ArrayList<Meal> meals = new ArrayList<Meal>();
 
         String query = "SELECT * FROM " + TABLE_LOCALMEALS;
 

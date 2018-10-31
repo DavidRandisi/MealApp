@@ -16,7 +16,7 @@ public class MealController {
     }
 
     public void addMeal(Meal meal) {
-        asyncDatabaseHandler.asyncInsert(meal);
+        asyncDatabaseHandler.asyncInsert(meal, appContext);
     }
 
 }

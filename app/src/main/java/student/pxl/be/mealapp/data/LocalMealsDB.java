@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class LocalMealsDB extends SQLiteOpenHelper{
 
+    //TODO: Class is obsolete
+
     private static final String DATABASE_NAME = "Meals";
 
     public LocalMealsDB(Context context){

@@ -1,23 +1,29 @@
 package student.pxl.be.mealapp.data;
 
+import android.app.Activity;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+
+import student.pxl.be.mealapp.MainActivity;
 import student.pxl.be.mealapp.domain.Meal;
 
-public abstract class AsyncDatabaseHandler {
+public class AsyncDatabaseHandler {
 
     private LocalMealsTableManager tabelManager;
 
-    public final void asyncInsert(Meal meal) {
+    public void asyncInsert(Meal meal, Context context) {
         new AsyncTask<Void, Void, Integer>(){
             @Override
             protected Integer doInBackground(Void... params){
+                tabelManager = new LocalMealsTableManager(context);
                 tabelManager.addMeal(meal);
                 return meal.getId();
             }
         }.execute();
     }
 
-    public final void asyncUpdate(Meal meal) {
+    public void asyncUpdate(Meal meal) {
         new AsyncTask<Void, Void, Integer>(){
             @Override
             protected Integer doInBackground(Void... params){
@@ -27,7 +33,7 @@ public abstract class AsyncDatabaseHandler {
         }.execute();
     }
 
-    public final void asyncDelete(Meal meal){
+    public void asyncDelete(Meal meal){
         new AsyncTask<Void, Void, Integer>(){
             @Override
             protected Integer doInBackground(Void... params){
@@ -38,7 +44,7 @@ public abstract class AsyncDatabaseHandler {
         }.execute();
     }
 
-    public final void asyndDeleteAll(){
+    public void asyndDeleteAll(){
         //TODO: Delete all async
     }
 }
