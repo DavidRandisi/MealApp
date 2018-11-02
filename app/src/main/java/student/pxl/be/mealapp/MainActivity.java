@@ -13,7 +13,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -34,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private SQLiteHelper database;
+
+    private static final String FAVORITE_TAG = "FAVORITE";
+    private static final String EXPLORE_TAG = "EXPLORE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 args.putBoolean("isTwoPane", isTwoPane);
                 currentFragment.setArguments(args);
             }
-            replaceMealsFragment(currentFragment);
+            replaceMealsFragment(currentFragment, currentFragment.getTag());
         }
     }
 
@@ -103,10 +109,13 @@ public class MainActivity extends AppCompatActivity {
 
             switch(id){
                 case R.id.nav_explore_id:
-                    fetchAndDisplayExploreMeals();
+                    if(exploreMealsFragment != null){
+                        replaceMealsFragment(exploreMealsFragment, EXPLORE_TAG);
+                    } else {
+                        fetchAndDisplayExploreMeals();
+                    }
                     break;
                 case R.id.nav_favorite_id:
-                    //fetchAndDisplayFavoriteMeals();
                     new GetFavoriteMealTask(this).execute();
                     break;
             }
@@ -114,22 +123,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void fetchAndDisplayExploreMeals(){
-        if(this.exploreMealsFragment == null){
             int randomPage = new Random().nextInt(100) + 1;
             String exploreURL = NetworkUtils.buildUriString("",Integer.toString(randomPage));
             Log.d("MainActivity", "fetchAndDisplayExploreMeals: about to call " + exploreURL);
             GsonRequest<MealResult> mealRequest = new GsonRequest<>(exploreURL, MealResult.class, null, createResponseListener(), null);
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(mealRequest);
-        } else {
-            replaceMealsFragment(exploreMealsFragment);
-        }
     }
     private Response.Listener<MealResult> createResponseListener(){
         return (response) -> {
                 ArrayList<Meal> randomMeals = (ArrayList<Meal>) response.meals;
                 exploreMealsFragment = MealsFragment.newInstance(randomMeals, isTwoPane);
-                replaceMealsFragment(exploreMealsFragment);
+                replaceMealsFragment(exploreMealsFragment, EXPLORE_TAG);
         };
     }
 
@@ -154,18 +159,41 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(MealsFragment favoriteMealsFragment) {
-            replaceMealsFragment(favoriteMealsFragment);
+            database.close();
+            replaceMealsFragment(favoriteMealsFragment, FAVORITE_TAG);
         }
     }
 
-    private void replaceMealsFragment(MealsFragment mealsFragment){
+    private void replaceMealsFragment(MealsFragment mealsFragment, String tag){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.list_frame_id, mealsFragment);
+        fragmentTransaction.replace(R.id.list_frame_id, mealsFragment, tag);
         fragmentTransaction.commit();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.refresh_button_id:
+                refreshCurrentFragment();
+                break;
+        }
         return actionBarDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+    private void refreshCurrentFragment(){
+        MealsFragment currentFragment = (MealsFragment) getSupportFragmentManager().findFragmentById(R.id.list_frame_id);
+        switch(currentFragment.getTag()){
+            case EXPLORE_TAG:
+                fetchAndDisplayExploreMeals();
+                break;
+            case FAVORITE_TAG: new GetFavoriteMealTask(this).execute(); break;
+        }
     }
 }

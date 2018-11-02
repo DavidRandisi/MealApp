@@ -115,6 +115,7 @@ public class MealDetailFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String resultMessage) {
+            database.close();
             Toast.makeText(context, resultMessage, Toast.LENGTH_SHORT).show();
         }
     }
@@ -143,6 +144,7 @@ public class MealDetailFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String resultMessage) {
+            database.close();
             Toast.makeText(context, resultMessage, Toast.LENGTH_SHORT).show();
         }
     }

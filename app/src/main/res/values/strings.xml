@@ -14,4 +14,5 @@
     <string name="description_hint">Add a description</string>
     <string name="ingredients_hint">Ingredients (Separated by comma)</string>
     <string name="save_local_meal">Save</string>
+    <string name="refresh">Refresh</string>
 </resources>
