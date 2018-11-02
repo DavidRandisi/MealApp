@@ -81,20 +81,16 @@ public class MealDetailFragment extends Fragment {
             });
 
             buttonFavorite.setOnClickListener(v -> {
-                if(meal.getId() == 0){
-                    new AddFavoriteMealTask(v.getContext()).execute(meal);
-                } else {
-                    new DeleteFavoriteMealTask(v.getContext()).execute(meal);
-                }
+                new FavoriteMealTask(v.getContext()).execute(meal);
             });
         }
         return view;
     }
 
-    private class AddFavoriteMealTask extends AsyncTask<Meal, Void, String>{
+    private class FavoriteMealTask extends AsyncTask<Meal, Void, String>{
         private Context context;
 
-        public AddFavoriteMealTask(Context context){
+        public FavoriteMealTask(Context context){
             this.context = context;
         }
 
@@ -105,40 +101,12 @@ public class MealDetailFragment extends Fragment {
 
         @Override
         protected String doInBackground(Meal... meals) {
-            if(meals.length > 0){
+            if(!database.isFavoriteMeal(meals[0])){
                 database.addFavoriteMeal(meals[0]);
                 return "Meal added to favorites!";
             } else {
-                return "Error: could not add to favorites.";
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String resultMessage) {
-            database.close();
-            Toast.makeText(context, resultMessage, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private class DeleteFavoriteMealTask extends AsyncTask<Meal, Void, String>{
-        private Context context;
-
-        public DeleteFavoriteMealTask(Context context){
-            this.context = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            database = new SQLiteHelper(context);
-        }
-
-        @Override
-        protected String doInBackground(Meal... meals) {
-            if(meals.length > 0){
                 database.deleteFavoriteMeal(meals[0]);
                 return "Meal succesfully deleted!";
-            } else {
-                return "Error: could not delete meal.";
             }
         }
 

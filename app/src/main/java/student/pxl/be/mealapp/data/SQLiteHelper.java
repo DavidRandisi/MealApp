@@ -94,12 +94,23 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public void deleteFavoriteMeal(Meal meal) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(TABLE_FAVORITES, KEY_ID + " = ?",
-                new String[]{
-                        String.valueOf(meal.getId())
-                }
+        db.delete(TABLE_FAVORITES, KEY_TITLE + " =?",
+                new String[]{meal.getTitle()}
         );
         db.close();
         Log.d("deleteFavoriteMeal", meal.toString());
+    }
+
+    public boolean isFavoriteMeal(Meal meal){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectString = "SELECT * FROM " + TABLE_FAVORITES + " WHERE " + KEY_TITLE + " =?";
+
+        Cursor cursor = db.rawQuery(selectString, new String[] {meal.getTitle()});
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
     }
 }
