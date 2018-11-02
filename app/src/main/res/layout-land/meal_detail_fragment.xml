@@ -63,7 +63,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:text="@string/add_to_favorites_land"
+        android:text="@string/add_to_favorites"
         android:textSize="13dp"
         app:layout_constraintEnd_toStartOf="@+id/details_ingredients_list_id"
         app:layout_constraintTop_toTopOf="@+id/details_ingredients_list_id" />

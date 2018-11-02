@@ -1,6 +1,8 @@
 package student.pxl.be.mealapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -12,8 +14,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -22,9 +22,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.Random;
 
-import student.pxl.be.mealapp.data.AsyncDatabaseHandler;
-import student.pxl.be.mealapp.data.LocalMealsDB;
-import student.pxl.be.mealapp.data.LocalMealsTableManager;
+import student.pxl.be.mealapp.data.SQLiteHelper;
 import student.pxl.be.mealapp.domain.Meal;
 import student.pxl.be.mealapp.domain.MealResult;
 import student.pxl.be.mealapp.fragments.MealsFragment;
@@ -32,12 +30,10 @@ import student.pxl.be.mealapp.utils.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity {
     private MealsFragment exploreMealsFragment;
-    private MealsFragment favoriteMealsFragment;
-    private MealsFragment localMealsFragment;
     private boolean isTwoPane;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private LocalMealsTableManager localMealsTableManager;
+    private SQLiteHelper database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,10 +106,8 @@ public class MainActivity extends AppCompatActivity {
                     fetchAndDisplayExploreMeals();
                     break;
                 case R.id.nav_favorite_id:
-                    fetchAndDisplayFavoriteMeals();
-                    break;
-                case R.id.nav_local_id:
-                    fetchAndDisplayLocalMeals();
+                    //fetchAndDisplayFavoriteMeals();
+                    new GetFavoriteMealTask(this).execute();
                     break;
             }
             return true;
@@ -139,33 +133,31 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    private void fetchAndDisplayFavoriteMeals() {
-        ArrayList<Meal> favoriteMeals = new ArrayList<>();
-        if (favoriteMeals.size() == 0) {
-            for (int i = 0; i < 20; i++) {
-                Meal meal = new Meal();
-                meal.thumbnail = "http://img.recipepuppy.com/12.jpg";
-                meal.title = "TO BE REPLACED WITH SQLITE FAVORITE MEALS";
-                meal.ingredients = "Dummy Chicken, Dummy Rice";
-                meal.href = "https://www.allrecipes.com/recipe/14746/mushroom-pork-chops/";
-                favoriteMeals.add(meal);
-            }
+    private class GetFavoriteMealTask extends AsyncTask<Void, Void, MealsFragment>{
+        private Context context;
+
+        public GetFavoriteMealTask(Context context){
+            this.context = context;
         }
-        if(this.favoriteMealsFragment == null){
-            favoriteMealsFragment = MealsFragment.newInstance(favoriteMeals, isTwoPane);
+
+        @Override
+        protected void onPreExecute() {
+            database = new SQLiteHelper(context);
         }
-        replaceMealsFragment(favoriteMealsFragment);
+
+        @Override
+        protected MealsFragment doInBackground(Void... arguments) {
+            ArrayList<Meal> favoriteMeals = (ArrayList<Meal>) database.getAllFavoriteMeals();
+            MealsFragment favoriteMealsFragment = MealsFragment.newInstance(favoriteMeals, isTwoPane);
+            return favoriteMealsFragment;
+        }
+
+        @Override
+        protected void onPostExecute(MealsFragment favoriteMealsFragment) {
+            replaceMealsFragment(favoriteMealsFragment);
+        }
     }
 
-    private void fetchAndDisplayLocalMeals() {
-        ArrayList<Meal> localMeals;
-        localMealsTableManager = new LocalMealsTableManager(getApplicationContext());
-        localMeals = localMealsTableManager.getAllMeals();
-        if(this.localMealsFragment == null){
-            localMealsFragment = MealsFragment.newInstance(localMeals, isTwoPane);
-        }
-        replaceMealsFragment(localMealsFragment);
-    }
     private void replaceMealsFragment(MealsFragment mealsFragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

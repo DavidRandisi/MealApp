@@ -2,6 +2,7 @@ package student.pxl.be.mealapp.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -109,4 +110,10 @@ public class Meal implements Parcelable {
             return new Meal[size];
         }
     };
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.getTitle() + " - " + this.getHref();
+    }
 }
