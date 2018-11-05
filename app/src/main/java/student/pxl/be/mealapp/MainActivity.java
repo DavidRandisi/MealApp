@@ -1,6 +1,7 @@
 package student.pxl.be.mealapp;
 
 import android.Manifest;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,13 +19,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -49,17 +48,20 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String FAVORITE_TAG = "FAVORITE";
     private static final String EXPLORE_TAG = "EXPLORE";
+    private static final String SEARCH_TAG = "SEARCH";
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
 
     private ConstraintLayout container;
     private AnimationDrawable anim;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        handleIntent(getIntent());
 
-        container = (ConstraintLayout) findViewById(R.id.container);
+        container = findViewById(R.id.container);
         anim = (AnimationDrawable) container.getBackground();
         anim.setEnterFadeDuration(6000);
         anim.setExitFadeDuration(2000);
@@ -111,6 +113,11 @@ public class MainActivity extends AppCompatActivity {
         if (currentFragment != null) {
             getSupportFragmentManager().putFragment(outState, "CurrentFragment", currentFragment);
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
     }
 
     //Decides if the screen is in twoPane mode by checking if the meal detail frame is available
@@ -177,16 +184,31 @@ public class MainActivity extends AppCompatActivity {
         int randomPage = new Random().nextInt(100) + 1;
         String exploreURL = NetworkUtils.buildUriString("", Integer.toString(randomPage));
         Log.d("MainActivity", "fetchAndDisplayExploreMeals: about to call " + exploreURL);
-        GsonRequest<MealResult> mealRequest = new GsonRequest<>(exploreURL, MealResult.class, null, createResponseListener(), null);
+        GsonRequest<MealResult> mealRequest = new GsonRequest<>(exploreURL, MealResult.class, null, createExploreResponseListener(), null);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(mealRequest);
     }
 
-    private Response.Listener<MealResult> createResponseListener() {
+    private Response.Listener<MealResult> createExploreResponseListener() {
         return (response) -> {
             ArrayList<Meal> randomMeals = (ArrayList<Meal>) response.meals;
             exploreMealsFragment = MealsFragment.newInstance(randomMeals, isTwoPane);
             replaceMealsFragment(exploreMealsFragment, EXPLORE_TAG);
+        };
+    }
+
+    private void fetchAndDisplaySearchMeals(String query){
+        String exploreURL = NetworkUtils.buildUriString(query, "1");
+        Log.d("MainActivity", "fetchAndDisplaySearchMeals: about to call " + exploreURL);
+        GsonRequest<MealResult> mealRequest = new GsonRequest<>(exploreURL, MealResult.class, null, createSearchResponseListener(), null);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(mealRequest);
+    }
+
+    private Response.Listener<MealResult> createSearchResponseListener() {
+        return (response) -> {
+            ArrayList<Meal> foundMeals = (ArrayList<Meal>) response.meals;
+            replaceMealsFragment(MealsFragment.newInstance(foundMeals, isTwoPane), SEARCH_TAG);
         };
     }
 
@@ -227,6 +249,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.search_button_id).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
 
@@ -264,5 +293,15 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         if (anim != null && anim.isRunning())
             anim.stop();
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            fetchAndDisplaySearchMeals(query);
+            //searchView.setIconified(true);
+            searchView.setIconified(true);
+            searchView.setIconified(true);
+        }
     }
 }
