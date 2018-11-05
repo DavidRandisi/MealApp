@@ -1,7 +1,9 @@
 package student.pxl.be.mealapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -23,7 +25,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private SurfaceHolder surfaceHolder;
     private Camera camera;
     private Context context;
-    private CameraHandlerThread mThread = null;
 
     private Camera.PictureCallback pictureCallback = (data, camera) -> {
         File pictureFile = getOutputMediaFile();
@@ -31,19 +32,19 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Log.d(TAG, "Error creating media file");
             return;
         }
-
         try {
             FileOutputStream fos = new FileOutputStream(pictureFile);
             fos.write(data);
             fos.close();
-            Toast toast = Toast.makeText(context, "Picture saved to Gallery!", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
         } catch (FileNotFoundException e) {
             Log.d(TAG, "File not found: " + e.getMessage());
         } catch (IOException e) {
             Log.d(TAG, "Error accessing file: " + e.getMessage());
         }
+        galleryAddPic(pictureFile.getAbsolutePath());
+        Toast toast = Toast.makeText(context, "Picture saved to Gallery!", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     };
 
 
@@ -59,58 +60,26 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void surfaceCreated(SurfaceHolder holder) {
         try{
-            openCameraInBackground();
-            camera.setPreviewDisplay(holder);
-            camera.setDisplayOrientation(90);
-            camera.startPreview();
-        } catch (IOException e){
+            camera = getCameraInstance();
+            if(camera != null){
+                camera.setPreviewDisplay(holder);
+                camera.setDisplayOrientation(90);
+                camera.startPreview();
+            }
+        } catch(IOException e){
             Log.d(TAG, "surfaceCreated: " + e.getMessage());
         }
     }
-    private void openCameraInBackground() {
-        if (mThread == null) {
-            mThread = new CameraHandlerThread();
-        }
 
-        synchronized (mThread) {
-            mThread.openCamera();
-        }
-    }
-
-    private class CameraHandlerThread extends HandlerThread {
-        Handler mHandler = null;
-
-        CameraHandlerThread() {
-            super("CameraHandlerThread");
-            start();
-            mHandler = new Handler(getLooper());
-        }
-
-        synchronized void notifyCameraOpened() {
-            notify();
-        }
-
-        void openCamera() {
-            mHandler.post(() -> {
-                openCameraInstance();
-                notifyCameraOpened();
-            });
-            try {
-                wait();
-            }
-            catch (InterruptedException e) {
-                Log.d(TAG, "wait was interrupted");
-            }
-        }
-    }
-
-    private void openCameraInstance() {
+    private Camera getCameraInstance() {
+        Camera c = null;
         try {
-            camera = Camera.open(); // attempt to get a Camera instance
+            c = Camera.open(); // attempt to get a Camera instance
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
             Log.d(TAG, "getCameraInstance: " + e.getMessage());
         }
+        return c;
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
@@ -119,22 +88,22 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             camera = null;
         }
     }
+
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
         // Don't change anything since camera is forced in portrait mode
     }
 
-    public void takePicture(){
+    public void takePicture() {
         camera.takePicture(null, null, pictureCallback);
     }
 
     private static File getOutputMediaFile() {
-        File mediaStorageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "Meals");
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
-                Log.d("MealApp-Pictures", "failed to create directory");
+                Log.d("MyCameraApp", "failed to create directory");
                 return null;
             }
         }
@@ -145,5 +114,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 "IMG_" + timeStamp + ".jpg");
 
         return mediaFile;
+    }
+    private void galleryAddPic(String imagePath) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(imagePath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        context.sendBroadcast(mediaScanIntent);
     }
 }
