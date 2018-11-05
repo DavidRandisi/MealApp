@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:tint="@color/WhiteSmoke"
         android:backgroundTint="@color/DarkRed"
-        android:src="@drawable/ic_add"/>
+        android:src="@drawable/ic_camera"/>
 </android.support.constraint.ConstraintLayout>
 
 
