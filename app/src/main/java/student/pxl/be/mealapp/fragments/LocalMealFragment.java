@@ -14,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import student.pxl.be.mealapp.R;
-import student.pxl.be.mealapp.data.AsyncDatabaseHandler;
 import student.pxl.be.mealapp.domain.Meal;
 
 public class LocalMealFragment extends Fragment {
@@ -23,7 +22,6 @@ public class LocalMealFragment extends Fragment {
     private EditText description;
     private EditText ingredients;
     private Button saveButton;
-    private AsyncDatabaseHandler asyncDatabaseHandler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,8 +48,8 @@ public class LocalMealFragment extends Fragment {
                                 meal.setThumbnail("none");
 
                                 //TODO: Remove hardcoded strings
-                                asyncDatabaseHandler = new AsyncDatabaseHandler();
-                                asyncDatabaseHandler.asyncInsert(meal, getContext());
+                                //asyncDatabaseHandler = new AsyncDatabaseHandler();
+                                //asyncDatabaseHandler.asyncInsert(meal, getContext());
                             }
 
                             //TODO: Go back to previous activity
