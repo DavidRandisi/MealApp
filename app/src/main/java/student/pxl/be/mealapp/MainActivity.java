@@ -2,8 +2,10 @@ package student.pxl.be.mealapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -41,10 +44,19 @@ public class MainActivity extends AppCompatActivity {
     private static final String FAVORITE_TAG = "FAVORITE";
     private static final String EXPLORE_TAG = "EXPLORE";
 
+    private ConstraintLayout container;
+    private AnimationDrawable anim;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        container = (ConstraintLayout) findViewById(R.id.container);
+        anim = (AnimationDrawable) container.getBackground();
+        anim.setEnterFadeDuration(6000);
+        anim.setExitFadeDuration(2000);
+
         FloatingActionButton fab = findViewById(R.id.fab_id);
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), LocalMealActivity.class);
@@ -195,5 +207,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case FAVORITE_TAG: new GetFavoriteMealTask(this).execute(); break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (anim != null && !anim.isRunning())
+            anim.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (anim != null && anim.isRunning())
+            anim.stop();
     }
 }
