@@ -1,7 +1,9 @@
 package student.pxl.be.mealapp;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import student.pxl.be.mealapp.domain.Meal;
 import student.pxl.be.mealapp.fragments.MealDetailFragment;
@@ -17,6 +20,9 @@ public class MealDetailActivity extends AppCompatActivity {
     private static final String TAG = "MealDetailActivity";
     private Meal meal;
 
+    private FrameLayout container;
+    private AnimationDrawable anim;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +30,11 @@ public class MealDetailActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: started");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getIncomingIntent();
+
+        container = findViewById(R.id.meal_detail_parent_layout_id);
+        anim = (AnimationDrawable) container.getBackground();
+        anim.setEnterFadeDuration(6000);
+        anim.setExitFadeDuration(2000);
 
         //Create fragment with the retrieved meal from the intent
         Bundle args = new Bundle();
@@ -59,5 +70,19 @@ public class MealDetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (anim != null && !anim.isRunning())
+            anim.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (anim != null && anim.isRunning())
+            anim.stop();
     }
 }
