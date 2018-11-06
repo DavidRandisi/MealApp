@@ -71,6 +71,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/add_to_favorites"
         android:background="@drawable/corner_button"
+        android:textColor="@color/White"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_ingredients_list_id"/>
@@ -84,6 +85,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/visit_webpage"
         android:background="@drawable/corner_button"
+        android:textColor="@color/White"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_ingredients_list_id"/>
