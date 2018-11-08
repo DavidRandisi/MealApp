@@ -3,13 +3,13 @@
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:id="@+id/parent_layout_id"
-    android:background="#7F000000"
+    android:background="@drawable/corner_list"
     android:padding="15dp">
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:id="@+id/item_image_id"
-        android:src="@drawable/no_thumbnail"/>
+        android:src="@drawable/no_thumbnail" />
     <TextView
         android:id="@+id/item_text_id"
         android:layout_width="match_parent"
