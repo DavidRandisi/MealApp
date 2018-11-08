@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = "CameraPreview";
@@ -62,8 +63,18 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try{
             camera = getCameraInstance();
             if(camera != null){
+                Camera.Parameters params = camera.getParameters();
+                List<Camera.Size> sizes = params.getSupportedPictureSizes();
+                Camera.Size size = sizes.get(0);
+                for(int i=0;i<sizes.size();i++)
+                {
+                    if(sizes.get(i).width > size.width)
+                        size = sizes.get(i);
+                }
+                params.setPictureSize(size.width, size.height);
                 camera.setPreviewDisplay(holder);
                 camera.setDisplayOrientation(90);
+                camera.setParameters(params);
                 camera.startPreview();
             }
         } catch(IOException e){
