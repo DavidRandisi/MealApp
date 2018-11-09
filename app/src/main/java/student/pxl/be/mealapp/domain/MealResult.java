@@ -1,4 +1,4 @@
-package student.pxl.be.mealapp.meals;
+package student.pxl.be.mealapp.domain;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class MealResult {
+    @SerializedName("recipe_id")
+    @Expose
+    public int id;
     @SerializedName("title")
     @Expose
     public String title;

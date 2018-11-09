@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/animation_list"
+    android:id="@+id/container">
+    <android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/drawer_layout_id">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="10">
+            <!-- Placeholder for the MealsFragment -->
+            <FrameLayout
+                android:id="@+id/list_frame_id"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"/>
+
+            <!-- Vertical line separator -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/WhiteSmoke"/>
+
+            <!-- Placeholder for the MealDetailFragment -->
+            <FrameLayout
+                android:id="@+id/land_detail_frame_id"
+                android:layout_width="0dp"
+                android:layout_weight="7"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+        <!-- Container for contents of drawer -->
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigation_id"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:menu="@menu/navigation"/>
+    </android.support.v4.widget.DrawerLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:tint="@color/WhiteSmoke"
+        android:backgroundTint="@color/DarkRed"
+        android:src="@drawable/ic_camera"/>
+</android.support.constraint.ConstraintLayout>
